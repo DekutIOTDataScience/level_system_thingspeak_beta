@@ -3,11 +3,13 @@
 #include "ESP8266.h"
 #include "SDFileSystem.h"
 #include  "FATFileSystem.h"
+#include "DS3231.h"
 #include <stdio.h>
 
 SDFileSystem sd(D11, D12, D13, D10, "sd");
 HCSR04 sensor(D4, D3);
 Serial pc(USBTX, USBRX);
+DS3231 rtc(D14,D15);
 FILE *fp;                                   // File pointer declear
 
 
@@ -17,7 +19,7 @@ ESP8266 wifi(D8, D2, 115200);
 //buffers for wifi library
 char resp[1000];
 char http_cmd[300], comm[300];
-
+int dw,d,M,y,h,m,s;  //VARIABLES FOR TIME AND YEAR
 int timeout = 8000; //timeout for wifi commands
 
 //SSID and password for connection
@@ -85,6 +87,12 @@ void wifi_initialize(void){
 }
 
 void wifi_send(){
+ 
+ // HERE IS THE CODE FOR OBTAINING TIME FROM THE DS3231
+    rtc.readDateTime(&dw,&d,&M,&y,&h,&m,&s);
+    pc.printf("%02d/%02d/%4d\r\n",d,M,y);
+    pc.printf("%02d:%02d:%02d\r\n",h,m,s);
+ //END OF CODE USED FOR OBTAINING TIME
     sensor.start();
     wait_ms(100); 
     long distance=sensor.get_dist_cm();
