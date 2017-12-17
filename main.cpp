@@ -6,8 +6,9 @@
 #include <stdio.h>
 
 SDFileSystem sd(D11, D12, D13, D10, "sd");
-HCSR04 sensor(PB_8, PB_9);
+HCSR04 sensor(D4, D3);
 Serial pc(USBTX, USBRX);
+FILE *fp;                                   // File pointer declear
 
 
 //wifi UART port and baud rate
@@ -20,37 +21,17 @@ char http_cmd[300], comm[300];
 int timeout = 8000; //timeout for wifi commands
 
 //SSID and password for connection
-#define SSID "wamae" 
-#define PASS "wamae6719"  
+#define SSID "jared" 
+#define PASS "qwerty12hja"  
 
 //Remote IP
 #define IP "184.106.153.149"
 
 //global variable
 long distance; 
-void readTest2() {
-    unsigned char c; // a single byte buffer
- 
-    sd.mount();
-    printf("\r\nreadTest2() fopen /sd/DirX/sdtest.txt\r\n");
-    FILE *file = fopen("/sd/DirX/sdtest.txt", "r");
- 
-    if (file == NULL) {
-        printf("\tFailed fopen(...)\r\n");
-    }
-    else {
-        printf("\tSuccess fopen(...)\r\n");
- 
-      while (c != '\n') {
-            c = getc(file); 
-            printf("%c\r\n",c);
-      }
-        fclose(file);
-    }
-    sd.unmount();
-}
+
 //Update key for thingspeak
-char* Update_Key = "1LXHUMOQRIL6QX03";
+char* Update_Key = "MWE9AS4N7CBG2B92";
  
 //Wifi init function
 void wifi_initialize(void){
@@ -107,7 +88,23 @@ void wifi_send(){
     sensor.start();
     wait_ms(100); 
     long distance=sensor.get_dist_cm();
-    pc.printf("distance = %dcm\n",distance);
+     printf("distance is %dcm\n", distance);
+     wait(1);
+    // SD card logger
+    fp = fopen("/sd/mylogger.txt", "a");            // File open for "a"ppend
+    if (fp == NULL) {                               // Error!
+            pc.printf("Unable to write the file\r\n");
+        } 
+    else {
+    pc.printf("%dcm \r\n",distance);          // Append data to SD card.
+    fprintf(fp, "%dcm \r\n",distance);        // Serial monitor.
+        }
+    fclose(fp);                                     // Cloce file.
+    pc.printf("File successfully written!\r\n");    // Serial monitor.
+
+        
+        wait(2);
+    
     
     pc.printf("******** Starting TCP connection on IP and port ********\r\n");
     wifi.startTCPConn(IP,80);    //cipstart
@@ -124,11 +121,7 @@ void wifi_send(){
     
     pc.printf("******** Sending URL to wifi ********\r\n");
     wifi.sendURL(http_cmd, comm);   //cipsend and get command
-    if (wifi.RcvReply(resp, timeout))    
-        pc.printf("%s",resp); 
-        pc.printf("Testing Sd card Point");  
-    else
-        pc.printf("No response while sending URL \r\n");
+    
 }
 
 void update_ThingSpeak()
@@ -144,7 +137,8 @@ void use_sdCard(){
     int main() {
     pc.baud(115200);
     wifi_initialize();
-
+   while (1)
     update_ThingSpeak();
+     wait(2);
 
 }
