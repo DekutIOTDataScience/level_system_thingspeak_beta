@@ -89,9 +89,8 @@ void wifi_initialize(void){
 void wifi_send(){
  
  // HERE IS THE CODE FOR OBTAINING TIME FROM THE DS3231
-    rtc.readDateTime(&dw,&d,&M,&y,&h,&m,&s);
-    pc.printf("%02d/%02d/%4d\r\n",d,M,y);
-    pc.printf("%02d:%02d:%02d\r\n",h,m,s);
+   
+   
  //END OF CODE USED FOR OBTAINING TIME
     sensor.start();
     wait_ms(100); 
@@ -99,13 +98,22 @@ void wifi_send(){
      printf("distance is %dcm\n", distance);
      wait(1);
     // SD card logger
-    fp = fopen("/sd/mylogger.txt", "a");            // File open for "a"ppend
+       fp = fopen("/sd/mylogger.txt", "a");            // File open for "a"ppend
     if (fp == NULL) {                               // Error!
             pc.printf("Unable to write the file\r\n");
         } 
     else {
-    pc.printf("%dcm \r\n",distance);          // Append data to SD card.
-    fprintf(fp, "%dcm \r\n",distance);        // Serial monitor.
+    rtc.readDateTime(&dw,&d,&M,&y,&h,&m,&s);
+    pc.printf("%02d/%02d/%4d\n",d,M,y);
+    pc.printf("%02d:%02d:%02d",h,m,s);
+    pc.printf(",");
+    
+    fprintf(fp, "%02d/%02d/%4d\n",d,M,y);
+    fprintf(fp, ",");
+    fprintf(fp, "%02d:%02d:%02d",h,m,s);
+    fprintf(fp, ",");
+    pc.printf("%dcm ",distance);          // Append data to SD card.
+    fprintf(fp, "%dcm\r\n",distance);        // Serial monitor.
         }
     fclose(fp);                                     // Cloce file.
     pc.printf("File successfully written!\r\n");    // Serial monitor.
