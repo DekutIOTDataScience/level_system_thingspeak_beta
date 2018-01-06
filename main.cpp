@@ -26,7 +26,7 @@ int timeout = 8000; //timeout for wifi commands
 #define SSID "jared" 
 #define PASS "qwerty12hja"  
 
-//Remote IP
+ //Remote IP
 #define IP "184.106.153.149"
 
 //global variable
