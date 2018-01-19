@@ -155,6 +155,7 @@ void use_sdCard(){
     wifi_initialize();
    while (1)
     update_ThingSpeak();
+     
      wait(2);
 
 }
