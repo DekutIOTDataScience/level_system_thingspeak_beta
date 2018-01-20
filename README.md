@@ -11,5 +11,6 @@ Consistent recording on sd card for a while before trying to check wifi availabi
 
 Overcoming the Inconsistency
 Since there is timestamp attached to data in the sd card and data stored in ThingSpeak Servers a sorting software can be used to inject data recorded on the sd card to csv file downloaded from thingspeak when doing analysis.
+![img_20180119_120945](https://user-images.githubusercontent.com/30165974/35184232-ee12a9f6-fe03-11e7-939a-200c75688d71.jpg)
 
 
