@@ -14,5 +14,6 @@ Since there is timestamp attached to data in the sd card and data stored in Thin
 
 
 ![img_20180119_120945](https://user-images.githubusercontent.com/30165974/35184232-ee12a9f6-fe03-11e7-939a-200c75688d71.jpg)
-
+![img_20180119_144032](https://user-images.githubusercontent.com/30165974/35185032-8c256ba6-fe0e-11e7-857b-f27d51b8b1eb.jpg)
+![img_20180119_144003](https://user-images.githubusercontent.com/30165974/35185034-991e92e2-fe0e-11e7-9bd3-44a0d03ca673.jpg)
 
